@@ -1,0 +1,89 @@
+plugins {
+    id 'jacoco'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot' version '3.1.2' //Versión de componentes de spring boot
+    id 'org.sonarqube' version '4.0.0.2929'
+    id "org.owasp.dependencycheck" version "8.1.2"
+    id 'com.github.ben-manes.versions' version '0.46.0'
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.1.2'
+    implementation 'org.postgresql:postgresql:42.6.0'
+    implementation 'org.springframework.cloud:spring-cloud-config-client:4.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.1.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.5'
+    implementation 'io.lettuce:lettuce-core:6.2.3.RELEASE'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.json:json:20230618'
+    implementation 'org.projectlombok:lombok:1.18.26'
+    implementation 'org.springframework.boot:spring-boot-starter-cache:3.1.2'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'com.auth0:jwks-rsa:0.22.0'
+    implementation 'com.auth0:java-jwt:4.4.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation 'com.oracle.database.jdbc:ojdbc8:23.2.0.0'
+    implementation 'commons-fileupload:commons-fileupload:1.5'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-config-client:4.0.3'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.3'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    implementation 'commons-io:commons-io:2.13.0'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'io.lettuce:lettuce-core:6.2.5.RELEASE'
+    implementation 'com.google.api-client:google-api-client:2.2.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.hibernate:hibernate-core:6.2.7.Final'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.6.0.202305301015-r'
+    implementation 'com.google.api-client:google-api-client-jackson2:2.2.0'
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.1'
+    implementation 'org.eclipse.angus:angus-mail:2.0.1'
+    implementation 'org.apache.opennlp:opennlp-tools:2.2.0'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-inline:5.1.1'
+    testImplementation('org.mockito:mockito-core:5.1.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.9.2'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.2.220'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+}
+
+configurations.all {
+    exclude group: "org.apache.logging.log4j", module: "log4j-api"
+    exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+    exclude group: "log4j", module: "log4j"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+springBoot {
+    buildInfo {}
+}
