@@ -2,8 +2,7 @@ package org.example.config;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import oracle.ucp.jdbc.PoolDataSource;
-import oracle.ucp.jdbc.PoolDataSourceFactory;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,7 +27,8 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "empresaEntityManagerFactory",
         transactionManagerRef = "empresaTransactionManager",
-        basePackages = {"org.example.repositories.empresa"}
+        basePackages = {"org.example.config.repository"}
+
 )
 public class ConfigBaseEf {
 
@@ -38,25 +38,15 @@ public class ConfigBaseEf {
     @Bean(name = "empresaDatasource")
     public DataSource getDataSource() {
         log.info("Inicia pool de empresa");
-        PoolDataSource empresa = null;
 
-        try {
-            empresa = PoolDataSourceFactory.getPoolDataSource();
-            empresa.setConnectionFactoryClassName(env.getProperty("spring.datasource.driver-class-name"));
-            empresa.setURL(env.getProperty("spring.datasource.url"));
-            empresa.setUser(env.getProperty("spring.datasource.username"));
-            empresa.setPassword(env.getProperty("spring.datasource.password"));
-            empresa.setMinPoolSize(1);
-            empresa.setInitialPoolSize(5);
-            empresa.setMaxPoolSize(10);
-            empresa.setValidateConnectionOnBorrow(true);
-            empresa.setConnectionPoolName("empresa");
-            empresa.setConnectionWaitTimeout(40);
-            empresa.setSQLForValidateConnection("SELECT 1");
-        } catch (Exception e) {
-            log.error("Error BD EF: " + e.getMessage(), e);
-        }
-        return empresa;
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setJdbcUrl(env.getProperty("spring.datasource.url"));
+        dataSource.setUsername(env.getProperty("spring.datasource.username"));
+        dataSource.setPassword(env.getProperty("spring.datasource.password"));
+        dataSource.setMaximumPoolSize(10);
+
+        return dataSource;
     }
 
     @Primary
@@ -64,7 +54,7 @@ public class ConfigBaseEf {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(getDataSource());
-        em.setPackagesToScan("org.example.entities");
+        em.setPackagesToScan("org.example.config.model");
 
         // Establecer explícitamente el proveedor de JPA
         em.setPersistenceProvider(new HibernatePersistenceProvider());
@@ -77,9 +67,7 @@ public class ConfigBaseEf {
 
         em.setJpaPropertyMap(properties);
         return em;
-
-
-}
+    }
 
     @Primary
     @Bean(name = "empresaTransactionManager")

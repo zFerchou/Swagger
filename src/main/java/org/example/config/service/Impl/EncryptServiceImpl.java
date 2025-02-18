@@ -14,10 +14,10 @@ public class EncryptServiceImpl implements EncryptService {
         if (request != null && request.getPlainText() != null && !request.getPlainText().isEmpty() &&
                 request.getKey() != null && !request.getKey().isEmpty()) {
 
-            // Lógica de cifrado (ejemplo simple)
+
             String encryptedText = simpleEncrypt(request.getPlainText(), request.getKey());
 
-            // Devuelve la respuesta de éxito
+
             return new EncryptResponse(encryptedText, "Cifrado exitoso", 200);
         }
 
